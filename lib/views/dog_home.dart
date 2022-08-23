@@ -11,31 +11,55 @@ class DogHome extends StatefulWidget {
 
 class _DogHomeState extends State<DogHome> {
   Future<Dog>? dogBreed;
+  //String dropdownvalue = 'Choose Breed';
+  // List data = [];
+  //Event selectedEvent;
 
   @override
   Widget build(BuildContext context) {
     dogBreed = GetData.getBreeds();
-    return FutureBuilder<Dog>(
-      future: dogBreed,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          Map<String,dynamic> myMap = Map.from( snapshot.data!.message );
-          var keyList = myMap.keys.toList(); 
-          //print(snapshot.data!.message); // Check getting Data
-          //return Text(snapshot.data!.message);
-          return ListView.builder(
-            itemCount: myMap.length,
-            itemBuilder: (context, index) {
-                          return Text(keyList[index]);//key value
-                        },
-          );
-
-        } else if (snapshot.hasError) {
-          return Text('${snapshot.error}');
-        }
-
-        return  CircularProgressIndicator();
-      },
+    //data = dogBreed as List;
+    return Scaffold(
+      body: FutureBuilder<Dog>(
+        future: dogBreed,
+        builder: (context, snapshot) {
+          final events = snapshot.data!.message.keys;
+          Map<String, dynamic> myMap = Map.from(snapshot.data!.message);
+          var keyList = myMap.keys.toList();
+          print(snapshot.data!.message.keys);
+          if (events != null ) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  DropdownButtonHideUnderline(
+                    child: DropdownButton<Dog>(
+                      hint: const Text("Choose Breed..."),
+                      //value: selectedEvent ?? events[0],
+                      isDense: true,
+                      onChanged: (newValue) {
+                        setState(() {
+                          //selectedEvent = newValue;
+                        });
+                      },
+                      items: keyList.map((String keylist) {
+                      return DropdownMenuItem<Dog>(
+                        //value: Text(keylist),
+                        child: Text(keylist),
+                      );
+                    }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
     );
   }
 }
