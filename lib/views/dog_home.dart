@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:dog/model/data.dart';
 import 'package:dog/services/fetch_data.dart';
+//1.Select Dog breed in Dropdown
+//2.Show random image of selected breed or from all breeds if there is not any selected.
+
 
 class DogHome extends StatefulWidget {
   const DogHome({Key? key}) : super(key: key);
