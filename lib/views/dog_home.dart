@@ -19,11 +19,18 @@ class _DogHomeState extends State<DogHome> {
   @override
   Widget build(BuildContext context) {
    dogBreed = GetData.getBreeds();
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Dog Breed'),
-      ),
+    return FutureBuilder<Dog>(
+      future: dogBreed,
+      builder: (context, snapshot) {
+              if(snapshot.hasData){
+                print(snapshot.data!.message);//
+                //return Text(snapshot.data!.message);
+              } else if(snapshot.hasError){
+                return Text('${snapshot.error}');
+              }
 
+              return const CircularProgressIndicator();
+            },
     );
   }
 }
