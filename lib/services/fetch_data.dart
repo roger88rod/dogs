@@ -19,6 +19,7 @@ class GetData{
       return dogFromJson(json);
     }
   }*/
+  //
 
   Future<Dog> fetchPost() async {
     var cl = http.Client();

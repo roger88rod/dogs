@@ -1,6 +1,6 @@
 // To parse this JSON data, do
 //
-//     final dog = dogFromJson(jsonString);
+//final dog = dogFromJson(jsonString);
 
 //import 'dart:convert';
 
