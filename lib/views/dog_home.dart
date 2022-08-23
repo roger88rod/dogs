@@ -1,10 +1,6 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import 'package:dog/model/data.dart';
 import 'package:dog/services/fetch_data.dart';
-import 'dart:developer';
 
 class DogHome extends StatefulWidget {
   const DogHome({Key? key}) : super(key: key);
@@ -18,19 +14,28 @@ class _DogHomeState extends State<DogHome> {
 
   @override
   Widget build(BuildContext context) {
-   dogBreed = GetData.getBreeds();
+    dogBreed = GetData.getBreeds();
     return FutureBuilder<Dog>(
       future: dogBreed,
       builder: (context, snapshot) {
-              if(snapshot.hasData){
-                print(snapshot.data!.message);//
-                //return Text(snapshot.data!.message);
-              } else if(snapshot.hasError){
-                return Text('${snapshot.error}');
-              }
+        if (snapshot.hasData) {
+          Map<String,dynamic> myMap = Map.from( snapshot.data!.message );
+          var keyList = myMap.keys.toList(); 
+          //print(snapshot.data!.message); // Check getting Data
+          //return Text(snapshot.data!.message);
+          return ListView.builder(
+            itemCount: myMap.length,
+            itemBuilder: (context, index) {
+                          return Text(keyList[index]);//key value
+                        },
+          );
 
-              return const CircularProgressIndicator();
-            },
+        } else if (snapshot.hasError) {
+          return Text('${snapshot.error}');
+        }
+
+        return  CircularProgressIndicator();
+      },
     );
   }
 }

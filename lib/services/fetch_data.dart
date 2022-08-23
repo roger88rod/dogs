@@ -12,7 +12,7 @@ class GetData {
     final response = await client.get(dogUri);
 
     if (response.statusCode == 200) {
-      print("Server status code success");
+      //print("Server status code success");
       return Dog.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load post');
