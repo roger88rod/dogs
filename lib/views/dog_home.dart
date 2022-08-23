@@ -1,6 +1,9 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:dog/model/data.dart';
+import 'package:dog/services/fetch_data.dart';
 import 'dart:developer';
 
 class DogHome extends StatefulWidget {
@@ -11,19 +14,16 @@ class DogHome extends StatefulWidget {
 }
 
 class _DogHomeState extends State<DogHome> {
-  
-
-  
+  Future<Dog>? dogBreed;
 
   @override
   Widget build(BuildContext context) {
-    
+   dogBreed = GetData.getBreeds();
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Dog Breed'),
-        ),
-        body: Center(
-          
-          ));
+      appBar: AppBar(
+        title: const Text('Dog Breed'),
+      ),
+
+    );
   }
 }
