@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dog/model/data.dart';
 import 'package:dog/services/fetch_data.dart';
+//TODO:
 //1.Display Dog breed in Dropdown
 //2.Show random image of dog
 //3.or from all breeds if there is not any selected.
@@ -16,14 +17,12 @@ class _DogHomeState extends State<DogHome> {
   Dog? dropdownvalue;
   Future<Dog>? dogBreed;
   Future<String>? randomDog;
-  bool _clicked = false;
+
+  //bool _clicked = false;
   List data = [];
   Dog? selectedDog;
-  var _dog = "";
-
-  void _handleClick() {
-    GetData.randomDogs();
-  }
+  //var _dog = "";
+  String selectval = "Choose Breed...";
 
   @override
   Widget build(BuildContext context) {
@@ -33,23 +32,33 @@ class _DogHomeState extends State<DogHome> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Stack(
-              children: [
-                Center(
-                  child: Container(
-                    height: 700,
-                    alignment: Alignment.bottomCenter,
-                    child: _bannerCard(),
+        body: Container(
+          decoration: BoxDecoration(
+              color: const Color(0xff7c94b6),
+              image: DecorationImage(
+                image: AssetImage("assets/images/dogsbackground.jpg"),
+                fit: BoxFit.cover,
+                colorFilter: new ColorFilter.mode(
+                    Colors.black.withOpacity(0.1), BlendMode.dstATop),
+              )),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Stack(
+                children: [
+                  Center(
+                    child: Container(
+                      height: 700,
+                      alignment: Alignment.bottomCenter,
+                      child: _bannerCard(),
+                    ),
                   ),
-                ),
-                Center(child: _imgBanner()),
-              ],
-            ),
-            SizedBox(height: 30),
-          ],
+                  Center(child: _imgBanner()),
+                ],
+              ),
+              SizedBox(height: 30),
+            ],
+          ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: _finalButton(context),
@@ -165,11 +174,11 @@ class _DogHomeState extends State<DogHome> {
         child: FutureBuilder<Dog>(
           future: dogBreed,
           builder: (context, snapshot) {
-            final events = snapshot.data!.message.keys;
+            final events = snapshot.data!.message;
+
             Map<String, dynamic> myMap = Map.from(snapshot.data!.message);
             var keyList = myMap.keys.toList();
-            print(snapshot.data!.message.keys);
-
+            //print(keyList);//All breed list
             // ignore: unnecessary_null_comparison
             if (events != null) {
               return Center(
@@ -177,19 +186,19 @@ class _DogHomeState extends State<DogHome> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     DropdownButtonHideUnderline(
-                      child: DropdownButton<Dog>(
+                      child: DropdownButton(
                         hint: const Text("Choose Breed..."),
                         value: selectedDog,
                         isDense: true,
                         items: keyList.map((item) {
-                          return DropdownMenuItem<Dog>(
-                            value: selectedDog,
+                          return DropdownMenuItem(
+                            value: item,
                             child: Text(item),
                           );
                         }).toList(),
                         onChanged: (item) {
                           setState(() {
-                            selectedDog = item;
+                            //_dog = selectedDog as String;
                           });
                         },
                       ),

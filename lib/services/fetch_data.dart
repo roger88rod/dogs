@@ -35,4 +35,19 @@ class GetData {
       throw Exception('Failed to load random dog');
     }
   }
+
+  //To get Dog by Breed
+  static Future<Dog> getDogByBreeds(String type) async {
+    var client = http.Client();
+    var dogByBreedUri = Uri.parse('https://dog.ceo/api/breed/$type/images');
+
+    final response = await client.get(dogByBreedUri);
+
+    if (response.statusCode == 200) {
+      //print("Server status code success");
+      return Dog.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load dog by $type');
+    }
+  }
 }
