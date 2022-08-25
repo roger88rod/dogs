@@ -1,14 +1,13 @@
-//import 'dart:developer';
 import 'package:dog/model/data.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 
 class GetData {
+  //To get All Dog Breeds
   static Future<Dog> getBreeds() async {
     var client = http.Client();
     var dogUri = Uri.parse('https://dog.ceo/api/breeds/list/all');
-    
 
     final response = await client.get(dogUri);
 
@@ -18,23 +17,22 @@ class GetData {
     } else {
       throw Exception('Failed to load dog breed');
     }
-    
   }
 
-  static Future<Dog> getRandom() async{
+//To get Random Dog Image
+  static Future<String> randomDogs() async {
     var client = http.Client();
-    String randomDog = 'https://dog.ceo/api/breeds/image/random';
-    var randomDogUri = Uri.parse(randomDog);
-
-    final response = await client.get(randomDogUri);
+    var dogUrl = 'https://dog.ceo/api/breeds/image/random';
+    var dogUri = Uri.parse(dogUrl);
+    var response = await client.get(dogUri);
 
     if (response.statusCode == 200) {
-      return Dog.fromJson(json.decode(response.body));
+      var jsonResponse = json.decode(response.body);
+      var parsedResponse = jsonResponse as Map<String, dynamic>;
+
+      return parsedResponse['message'];
     } else {
       throw Exception('Failed to load random dog');
     }
-    
   }
-
-  
 }
