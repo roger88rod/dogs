@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:dog/model/data.dart';
 import 'package:dog/services/fetch_data.dart';
-//1.Select Dog breed in Dropdown
-//2.Show random image of selected breed or from all breeds if there is not any selected.
+//1.Display Dog breed in Dropdown
+//2.Show random image of dog
+//3.or from all breeds if there is not any selected.
 
 class DogHome extends StatefulWidget {
   const DogHome({Key? key}) : super(key: key);
@@ -15,18 +16,20 @@ class _DogHomeState extends State<DogHome> {
   Dog? dropdownvalue;
   Future<Dog>? dogBreed;
   Future<String>? randomDog;
-
-  // ignore: deprecated_member_use
+  bool _clicked = false;
   List data = [];
-  //Event selectedEvent;
   Dog? selectedDog;
+  var _dog = "";
+
+  void _handleClick() {
+    GetData.randomDogs();
+  }
 
   @override
   Widget build(BuildContext context) {
     dogBreed = GetData.getBreeds();
     randomDog = GetData.randomDogs();
 
-    //data = dogBreed as List;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -43,7 +46,6 @@ class _DogHomeState extends State<DogHome> {
                   ),
                 ),
                 Center(child: _imgBanner()),
-                
               ],
             ),
             SizedBox(height: 30),
@@ -81,16 +83,14 @@ class _DogHomeState extends State<DogHome> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                
               ),
               SizedBox(height: 20),
               Center(child: _breeds()),
               SizedBox(height: 20),
               Container(
                 height: 250,
-                child:  _random(),
+                child: _random(),
               ),
-              
             ],
           ),
         ),
@@ -126,7 +126,9 @@ class _DogHomeState extends State<DogHome> {
           ),
         ),
         onPressed: () {
-          //_random();
+          setState(() {
+            randomDog = GetData.randomDogs();
+          });
         },
       ),
     );
