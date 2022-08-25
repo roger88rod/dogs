@@ -192,13 +192,14 @@ class _DogHomeState extends State<DogHome> {
                         isDense: true,
                         items: keyList.map((item) {
                           return DropdownMenuItem(
-                            value: item,
+                            value: Text(item),
                             child: Text(item),
                           );
                         }).toList(),
-                        onChanged: (item) {
+                        onChanged: (value) {
                           setState(() {
-                            _dog = selectedDog as String;
+                            _dog = value as String;
+                            print(value);
                           });
                         },
                       ),
