@@ -21,7 +21,7 @@ class _DogHomeState extends State<DogHome> {
   //bool _clicked = false;
   List data = [];
   Dog? selectedDog;
-  //var _dog = "";
+  var _dog = "";
   String selectval = "Choose Breed...";
 
   @override
@@ -198,7 +198,7 @@ class _DogHomeState extends State<DogHome> {
                         }).toList(),
                         onChanged: (item) {
                           setState(() {
-                            //_dog = selectedDog as String;
+                            _dog = selectedDog as String;
                           });
                         },
                       ),
