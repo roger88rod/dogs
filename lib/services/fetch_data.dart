@@ -37,17 +37,19 @@ class GetData {
   }
 
   //To get Dog by Breed
-  static Future<Dog> getDogByBreeds(String type) async {
+  static Future<String> getDogByBreeds(String type) async {
     var client = http.Client();
-    var dogByBreedUri = Uri.parse('https://dog.ceo/api/breed/$type/images');
+    var dogByBreedUri = Uri.parse('https://dog.ceo/api/breed/$type/images/random');
 
     final response = await client.get(dogByBreedUri);
 
-    if (response.statusCode == 200) {
-      //print("Server status code success");
-      return Dog.fromJson(json.decode(response.body));
+     if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      var parsedResponse = jsonResponse as Map<String, dynamic>;
+print(parsedResponse['message']);
+      return parsedResponse['message'];
     } else {
-      throw Exception('Failed to load dog by $type');
+      throw Exception('Failed to load random dog');
     }
   }
 }

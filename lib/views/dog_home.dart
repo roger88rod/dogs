@@ -17,6 +17,7 @@ class _DogHomeState extends State<DogHome> {
   Dog? dropdownvalue;
   Future<Dog>? dogBreed;
   Future<String>? randomDog;
+  Future<String>? getDogByBreed;
   String dropDownValue = '';
   //bool _clicked = false;
   List data = [];
@@ -28,6 +29,8 @@ class _DogHomeState extends State<DogHome> {
   Widget build(BuildContext context) {
     dogBreed = GetData.getBreeds();
     randomDog = GetData.randomDogs();
+    getDogByBreed = GetData.getDogByBreeds(dropDownValue);
+
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -174,7 +177,7 @@ class _DogHomeState extends State<DogHome> {
 
        Widget _getRandomSelectedBreed() => Container(
         child: FutureBuilder<String>(
-          future: randomDog,
+          future: getDogByBreed,
           builder: (context, snapshot) {
             final randomDogPic = snapshot.data!;
             //print(randomDogPic);
