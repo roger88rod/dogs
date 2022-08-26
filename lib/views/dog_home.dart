@@ -17,12 +17,12 @@ class _DogHomeState extends State<DogHome> {
   Dog? dropdownvalue;
   Future<Dog>? dogBreed;
   Future<String>? randomDog;
-
+  String dropDownValue = '';
   //bool _clicked = false;
   List data = [];
-  Dog? selectedDog;
+  late String selectedDog;
   var _dog = "";
-  String selectval = "Choose Breed...";
+  String selectval = '';
 
   @override
   Widget build(BuildContext context) {
@@ -94,11 +94,13 @@ class _DogHomeState extends State<DogHome> {
                 ),
               ),
               SizedBox(height: 20),
-              Center(child: _breeds()),
+              Center(child: _dogBreeds()),
               SizedBox(height: 20),
               Container(
                 height: 250,
-                child: _random(),
+                child: (dropDownValue == '')
+                ? _random()
+                :_getRandomSelectedBreed()
               ),
             ],
           ),
@@ -170,48 +172,62 @@ class _DogHomeState extends State<DogHome> {
         ),
       );
 
-  Widget _breeds() => Container(
-        child: FutureBuilder<Dog>(
-          future: dogBreed,
+       Widget _getRandomSelectedBreed() => Container(
+        child: FutureBuilder<String>(
+          future: randomDog,
           builder: (context, snapshot) {
-            final events = snapshot.data!.message;
-
-            Map<String, dynamic> myMap = Map.from(snapshot.data!.message);
-            var keyList = myMap.keys.toList();
-            //print(keyList);//All breed list
+            final randomDogPic = snapshot.data!;
+            //print(randomDogPic);
             // ignore: unnecessary_null_comparison
-            if (events != null) {
+            if (randomDogPic != null) {
               return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    DropdownButtonHideUnderline(
-                      child: DropdownButton(
-                        hint: const Text("Choose Breed..."),
-                        value: selectedDog,
-                        isDense: true,
-                        items: keyList.map((item) {
-                          return DropdownMenuItem(
-                            value: Text(item),
-                            child: Text(item),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            _dog = value as String;
-                            print(value);
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              );
+                  child: Container(
+                height: 300,
+                width: 300,
+                //alignment: Alignment.bottomCenter,
+                child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: new ListView(
+                        children: <Widget>[new Image.network(randomDogPic)])),
+              ));
             } else {
               return const Center(
                 child: CircularProgressIndicator(),
               );
             }
+          },
+        ),
+      );
+
+   Widget _dogBreeds() => Container(
+        child: FutureBuilder(
+          future: GetData.getBreeds(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            Map<String, dynamic> myMap = Map.from(snapshot.data!.message);
+            var keyList = myMap.keys.toList();
+            return snapshot.hasData
+                ? Container(
+                    child: DropdownButton<String>(
+                      hint: Text(dropDownValue),
+                      items: keyList.map((item) {
+                        return new DropdownMenuItem(
+                          value: item,
+                          child: Text(item),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          dropDownValue = value!;
+                          print(value);
+                        });
+                      },
+                    ),
+                  )
+                : Container(
+                    child: Center(
+                      child: Text('Loading...'),
+                    ),
+                  );
           },
         ),
       );
